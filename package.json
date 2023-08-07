@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./src/server/index.js",
-    "build": "webpack --config ./config/server.config.js --watch",
+    "server:build": "webpack --config ./config/server.config.js --watch",
+    "client:build": "webpack --config ./config/client.config.js --watch",
     "start": "nodemon ./build/server/server_bundle.js"
   },
   "keywords": [],
