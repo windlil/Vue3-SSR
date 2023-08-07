@@ -1,10 +1,26 @@
 const express = require('express')
+import createApp from '../app'
+import { renderToString } from '@vue/server-renderer'
 
 let server  = express()
 
-server.get('/', (req, res) => {
+server.get('/', async (req, res) => {
+  let app  = createApp()
+  let appString = await renderToString(app)
   res.send(
-    `hello node serve`
+    `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+    </head>
+    <body>
+      <div id='app'>
+        ${appString}
+      </div>
+    </body>
+    </html>`
   )
 })
 
