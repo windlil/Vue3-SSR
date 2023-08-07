@@ -1,11 +1,19 @@
 const express = require('express')
 import createApp from '../app'
 import { renderToString } from '@vue/server-renderer'
+import createRouter from '../router'
+import { createMemoryHistory } from 'vue-router'
 
 let server  = express()
 
-server.get('/', async (req, res) => {
+server.use(express.static('build'))
+
+server.get('/*', async (req, res) => {
   let app  = createApp()
+  let router = createRouter(createMemoryHistory())
+  app.use(router)
+  await router.push(req.url || '/')
+  await router.isReady()
   let appString = await renderToString(app)
   res.send(
     `<!DOCTYPE html>
@@ -19,6 +27,7 @@ server.get('/', async (req, res) => {
       <div id='app'>
         ${appString}
       </div>
+      <script src="/client/client_bundle.js"></script>
     </body>
     </html>`
   )
